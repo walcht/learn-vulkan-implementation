@@ -239,25 +239,18 @@ private:
     // specify used device features
     VkPhysicalDeviceFeatures deviceFeatures{};
 
-    // create the logical device
+    // create the logical device - device level validation layers are deprecated
     VkDeviceCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     createInfo.pQueueCreateInfos = &queueCreateInfo;
     createInfo.queueCreateInfoCount = 1;
     createInfo.pEnabledFeatures = &deviceFeatures;
     createInfo.enabledExtensionCount = 0;
-#ifndef NDEBUG
-    createInfo.enabledLayerCount =
-        static_cast<uint32_t>(m_validationLayers.size());
-    createInfo.ppEnabledExtensionNames = m_validationLayers.data();
-#else
     createInfo.enabledLayerCount = 0;
-#endif
     if (vkCreateDevice(m_physicalDevice, &createInfo, nullptr, &m_device) !=
         VK_SUCCESS) {
       throw std::runtime_error("failed to create logical device!");
     }
-
     // retrieve graphics queue family
     vkGetDeviceQueue(m_device, indices.graphics_family.value(), 0,
                      &m_graphicsQueue);
