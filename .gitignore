@@ -1,2 +1,6 @@
 main
 *.spv
+build
+compile_commands.json
+vulkan_triangle
+.cache
